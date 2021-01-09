@@ -36,6 +36,7 @@ end
 
   gem 'bootstrap-sass'
   gem 'jquery-rails'
+  gem 'kaminari'
 
 
 group :development do
