@@ -23,14 +23,22 @@ class BoardsController < ApplicationController
    end
  
    def show
+     @comment = Comment.new(board_id: @board.id)
    end
  
    def edit
+     @board.attributes = flash[:board] if flash[:board]
    end
  
    def update
-     @board.update(board_params)
-     redirect_to @board
+     if @board.update(board_params)
+       redirect_to @board
+     else
+       redirect_to :back, flash: {
+         board: @board,
+         error_messages: @board.errors.full_messages
+       }
+     end
    end
  
    def destroy
@@ -41,7 +49,7 @@ class BoardsController < ApplicationController
    private
  
    def board_params
-     params.require(:board).permit(:name, :title, :body)
+     params.require(:board).permit(:name, :title, :body, tag_ids: [])
    end
  
    def set_target_board
